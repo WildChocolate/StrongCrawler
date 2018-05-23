@@ -11,15 +11,18 @@ namespace StrongCrawler
     {
         static CommentXPath()
         {
-            //*[@id='divCtripComment']/div[4]/div
-            //*[@id="divCtripComment"]/div[3]/div[1]/div[1]/p[2]/span
+
             Name = By.XPath("div[1]/p[@class='name']/span");
-            Score = By.XPath("div[2]/p/span[2]/span");
-            Type=By.XPath("div[2]/p/a");
-            LiveTime=By.XPath("div[2]/p/span[3]");
-            Content = By.XPath("div[2]/div[@class='comment_txt']/div[@class='J_commentDetail']");
-            //*[@id="divCtripComment"]/div[3]/div[15]/div[2]/div[2]/div[3]/p/span
-            PublishDate = By.XPath("div[2]/div[@class='comment_txt']/div[@class='comment_bar']/p/span");
+            //评论有可能是个砖家点评，就没有分数
+            //*[@id="divCtripComment"]/div[3]/div[1]/div[2]/p/span[2]/span
+            Score = By.XPath("div[@class='comment_main']/p[@class='comment_title']/span[@class='score']/span");
+            Type = By.XPath("div[2]/p/a");
+            LiveTime = By.XPath("div[2]/p/span[3]");
+
+            //想不通为什么 在http://hotels.ctrip.com/hotel/1553259.html会匹配错误，但在页面里搜索是可以正确定位到元素的
+            Content = By.XPath("div[@class='comment_main']/div[@class='comment_txt']/[@class='J_commentDetail']");
+
+            PublishDate = By.XPath("div[@class='comment_main']/div[@class='comment_txt']/div[@class='comment_bar']/p/span[@class='time']");
         }
         public static By Name
         {

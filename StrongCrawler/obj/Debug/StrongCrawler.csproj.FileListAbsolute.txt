@@ -20,4 +20,3 @@ c:\users\ekko.xu\documents\visual studio 2013\Projects\StrongCrawler\StrongCrawl
 c:\users\ekko.xu\documents\visual studio 2013\Projects\StrongCrawler\StrongCrawler\obj\Debug\StrongCrawler.exe
 c:\users\ekko.xu\documents\visual studio 2013\Projects\StrongCrawler\StrongCrawler\obj\Debug\StrongCrawler.pdb
 c:\users\ekko.xu\documents\visual studio 2013\Projects\StrongCrawler\StrongCrawler\obj\Debug\StrongCrawler.Form1.resources
-C:\Users\ekko.xu\Documents\Visual Studio 2013\Projects\StrongCrawler\StrongCrawler\obj\Debug\StrongCrawler.csprojResolveAssemblyReference.cache

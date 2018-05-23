@@ -12,6 +12,6 @@ namespace StrongCrawler
         event EventHandler<OnCompletedEventArgs> OnCompleted;
         event EventHandler<OnErrorEventArgs> OnError;
 
-        Task Start(Uri uri, Script script, Operation opration);
+        Task Start(Uri uri, Script script, Operation opration, bool Colsed);
     }
 }

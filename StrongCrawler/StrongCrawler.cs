@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium.IE;
+﻿using OpenQA.Selenium;
+using OpenQA.Selenium.IE;
 using OpenQA.Selenium.PhantomJS;
 using OpenQA.Selenium.Support.UI;
 using System;
@@ -31,7 +32,11 @@ namespace StrongCrawler
         public event EventHandler<OnCompletedEventArgs> OnCompleted;
 
         public event EventHandler<OnErrorEventArgs> OnError;
-        
+        public PhantomJSDriver Driver
+        {
+            get;
+            set;
+        }
         /// <summary>
         /// 高级爬虫
         /// </summary>
@@ -39,28 +44,27 @@ namespace StrongCrawler
         /// <param name="script"></param>
         /// <param name="operation"></param>
         /// <returns></returns>
-        public async Task Start(Uri uri, Script script, Operation operation)
+        public async Task Start(Uri uri, Script script, Operation operation, bool Closed=true)
         {
             await Task.Run(() => { 
                 if (OnStrart != null)
                     this.OnStrart(this, new OnStartEventArgs(uri));
-                var driver = new PhantomJSDriver( _options);
-
+                Driver = new PhantomJSDriver(_options);
                 try{
-                    driver.Navigate().GoToUrl(uri);
+                    Driver.Navigate().GoToUrl(uri);
                     var watch = DateTime.Now;
                     if (script != null)
-                        driver.ExecuteScript(script.Code, script.Args);
+                        Driver.ExecuteScript(script.Code, script.Args);
                     if (operation.Action != null)
-                        operation.Action.Invoke(driver);
-                    var driverWait = new WebDriverWait(driver, TimeSpan.FromMilliseconds(operation.TimeOut));
+                        operation.Action.Invoke(Driver);
+                    var driverWait = new WebDriverWait(Driver, TimeSpan.FromMilliseconds(operation.TimeOut));
                     if (operation.Condition != null)
                         driverWait.Until(operation.Condition);
                     var ThreadId = Thread.CurrentThread.ManagedThreadId;
                     var milliseconds = DateTime.Now.Subtract(watch).Milliseconds;
-                    var pageSoure = driver.PageSource;
+                    var pageSoure = Driver.PageSource;
                     if (this.OnCompleted != null)
-                        this.OnCompleted(this, new OnCompletedEventArgs(uri, ThreadId, milliseconds, pageSoure, driver));
+                        this.OnCompleted(this, new OnCompletedEventArgs(uri, ThreadId, milliseconds, pageSoure, Driver));
                 }
                 catch (Exception ex)
                 {
@@ -69,8 +73,11 @@ namespace StrongCrawler
                 }
                 finally
                 {
-                    driver.Close();
-                    driver.Quit();
+                    if (Closed)
+                    {
+                        Driver.Close();
+                        Driver.Quit();
+                    }
                 }
             });
         }
