@@ -37,6 +37,7 @@
             this.skipTxtbox = new System.Windows.Forms.TextBox();
             this.skipBtn = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.citySearchTxt = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // searchBtn
@@ -51,6 +52,7 @@
             // 
             // DetailTxt
             // 
+            this.DetailTxt.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.DetailTxt.Location = new System.Drawing.Point(608, 12);
             this.DetailTxt.Multiline = true;
             this.DetailTxt.Name = "DetailTxt";
@@ -68,12 +70,12 @@
             this.cityListBox.ItemHeight = 20;
             this.cityListBox.Items.AddRange(new object[] {
             "北京华滨国际大酒店"});
-            this.cityListBox.Location = new System.Drawing.Point(62, 13);
+            this.cityListBox.Location = new System.Drawing.Point(62, 53);
             this.cityListBox.Name = "cityListBox";
-            this.cityListBox.Size = new System.Drawing.Size(227, 444);
+            this.cityListBox.Size = new System.Drawing.Size(227, 404);
             this.cityListBox.TabIndex = 3;
             this.cityListBox.ValueMember = "Uri";
-            this.cityListBox.SelectedIndexChanged += new System.EventHandler(this.cityListBox_SelectedIndexChanged);
+            this.cityListBox.DoubleClick += new System.EventHandler(this.cityListBox_DoubleClick);
             // 
             // HotelListBox
             // 
@@ -86,6 +88,7 @@
             this.HotelListBox.TabIndex = 4;
             this.HotelListBox.ValueMember = "Uri";
             this.HotelListBox.SelectedIndexChanged += new System.EventHandler(this.HotelListBox_SelectedIndexChanged);
+            this.HotelListBox.DataSourceChanged += new System.EventHandler(this.HotelListBox_DataSourceChanged);
             // 
             // previousBtn
             // 
@@ -139,11 +142,21 @@
             this.label1.TabIndex = 9;
             this.label1.Text = "页";
             // 
+            // citySearchTxt
+            // 
+            this.citySearchTxt.Location = new System.Drawing.Point(62, 13);
+            this.citySearchTxt.Name = "citySearchTxt";
+            this.citySearchTxt.Size = new System.Drawing.Size(227, 21);
+            this.citySearchTxt.TabIndex = 10;
+            this.citySearchTxt.TextChanged += new System.EventHandler(this.textBox1_TextChanged_1);
+            this.citySearchTxt.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.citySearchTxt_KeyPress);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1049, 520);
+            this.Controls.Add(this.citySearchTxt);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.skipBtn);
             this.Controls.Add(this.skipTxtbox);
@@ -155,6 +168,7 @@
             this.Controls.Add(this.searchBtn);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -172,6 +186,7 @@
         private System.Windows.Forms.TextBox skipTxtbox;
         private System.Windows.Forms.Button skipBtn;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox citySearchTxt;
     }
 }
 

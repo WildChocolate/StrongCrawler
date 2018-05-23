@@ -39,14 +39,21 @@ namespace StrongCrawler
         private async void button1_Click(object sender, EventArgs e)
         {
             this.searchBtn.Enabled = false;
+            this.searchBtn.Text = "请等待...";
             if (hotelCrawler.Driver != null)
             {
                 hotelCrawler.Driver.Close();
                 hotelCrawler.Driver.Quit();
             }
-            var hotelUrl = "http://hotels.ctrip.com/hotel/434938.html";
-            hotelUrl = HotelListBox.SelectedValue.ToString();
-            hotelUrl = hotelUrl.Split('?')[0];
+            
+            //var hotelUrl = "http://hotels.ctrip.com/hotel/434938.html";
+            Uri hotelUrl =null;
+            if (HotelListBox.SelectedValue == null)
+            {
+                hotelUrl = hotelList[0].Uri;
+            }
+            else
+                hotelUrl = HotelListBox.SelectedValue as Uri;
             
             var operation = new Operation
             {
@@ -63,8 +70,9 @@ namespace StrongCrawler
                 },
                 TimeOut = 1500
             };
-            await hotelCrawler.Start(new Uri(hotelUrl), null, operation, false);
+            await hotelCrawler.Start(hotelUrl, null, operation, false);
             this.searchBtn.Enabled=true;
+            this.searchBtn.Text = "查看";
             this.skipBtn.Enabled = true;
         }
 
@@ -95,9 +103,9 @@ namespace StrongCrawler
             mainBuilder.AppendLine("地址：" + hd.Address);
             mainBuilder.AppendLine("价格:" + hd.Price);
             mainBuilder.AppendLine("数量" + hd.Sumary);
-            mainBuilder.AppendLine("===========================================" + Environment.NewLine);
+            mainBuilder.AppendLine("============================" + Environment.NewLine);
             mainBuilder.AppendLine(hd.Pager.ToString());
-            mainBuilder.AppendLine("===========================================" + Environment.NewLine);
+            mainBuilder.AppendLine("============================" + Environment.NewLine);
             mainBuilder.AppendLine("点评内容" + Environment.NewLine);
         }
         private void refreshComments(IList<Comment> Comments)
@@ -178,8 +186,9 @@ namespace StrongCrawler
             Console.WriteLine("线程:" + e.ThreadId);
             Console.WriteLine("地址:" + e.uri.ToString());
             this.Invoke(new Action(() => {
-                //this.cityListBox.Items.AddRange(items.ToArray());
                 this.cityListBox.DataSource = cityList;
+                cityListBox.SelectedIndex = 0;
+                cityListBox_DoubleClick(this, null);
             }));
         }
 
@@ -196,21 +205,7 @@ namespace StrongCrawler
 
         private async void cityListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            await Task.Delay(1000);
-            var cityUrl = cityListBox.SelectedValue as Uri;
-            var cityName = cityListBox.Text;
-            var hotelListCrawler = new StrongCrawler();
-            hotelListCrawler.OnStrart += delegate{
-                Console.WriteLine("开始搜索" + cityName);
-            };
-            hotelListCrawler.OnError += (s, arg)=>
-            {
-                Console.WriteLine("搜索发生错误："+arg.ex );
-            };
-            hotelListCrawler.OnCompleted += hotelListCrawler_OnCompleted;
-            this.cityListBox.Enabled = false;
-            await hotelListCrawler.Start(cityUrl, null, new Operation());
-            this.cityListBox.Enabled = true;
+            
         }
 
         void hotelListCrawler_OnCompleted(object sender, OnCompletedEventArgs e)
@@ -263,11 +258,6 @@ namespace StrongCrawler
             hd.Pager.Next--;
             loadHotelInfo();
             CheckBtnStatus();
-        }
-
-        void commentCrawler_OnCompleted(object sender, OnCompletedEventArgs e)
-        {
-            
         }
 
         void commentCrawler_OnError(object sender, OnErrorEventArgs e)
@@ -372,6 +362,75 @@ namespace StrongCrawler
             hd.Pager.Next+= int.Parse(page)+1;
             loadHotelInfo();
             CheckBtnStatus();
+        }
+
+        private void textBox1_TextChanged_1(object sender, EventArgs e)
+        {
+            var val = citySearchTxt.Text;
+            var bs = new BindingSource();
+            if (string.IsNullOrWhiteSpace(val))
+            {
+                bs.DataSource = cityList;
+            }
+            else
+            {
+                var city_copy = cityList.FindAll(c =>
+                {
+                    return c.CityName.Contains(val);
+                });
+                bs.DataSource = city_copy;
+            }
+            cityListBox.DataSource = bs;
+        }
+
+        
+
+        private async void cityListBox_DoubleClick(object sender, EventArgs e)
+        {
+            await Task.Delay(300);
+            var cityUrl = cityListBox.SelectedValue as Uri;
+            var cityName = cityListBox.Text;
+            var hotelListCrawler = new StrongCrawler();
+            hotelListCrawler.OnStrart += delegate
+            {
+                Console.WriteLine("开始搜索" + cityName);
+            };
+            hotelListCrawler.OnError += (s, arg) =>
+            {
+                Console.WriteLine("搜索发生错误：" + arg.ex);
+            };
+            hotelListCrawler.OnCompleted += hotelListCrawler_OnCompleted;
+            this.cityListBox.Enabled = false;
+            await hotelListCrawler.Start(cityUrl, null, new Operation());
+            this.cityListBox.Enabled = true;
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            hotelCrawler.Driver.Close();
+            hotelCrawler.Driver.Quit();
+        }
+
+        private void HotelListBox_DataSourceChanged(object sender, EventArgs e)
+        {
+            HotelListBox.Select();
+            button1_Click(sender, e);
+        }
+
+        private void citySearchTxt_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == System.Convert.ToChar(13))
+            {
+                e.Handled = true;
+                var idx = this.cityListBox.SelectedIndex;
+                if (idx >-1)
+                {
+                    //MessageBox.Show(cityListBox.SelectedIndex+"");
+                    cityListBox_DoubleClick(sender, e);
+                }
+                else
+                    return;
+            }
         }
     }
 }
