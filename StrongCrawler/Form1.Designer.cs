@@ -42,7 +42,7 @@
             // 
             // searchBtn
             // 
-            this.searchBtn.Location = new System.Drawing.Point(62, 485);
+            this.searchBtn.Location = new System.Drawing.Point(12, 485);
             this.searchBtn.Name = "searchBtn";
             this.searchBtn.Size = new System.Drawing.Size(75, 23);
             this.searchBtn.TabIndex = 0;
@@ -53,7 +53,7 @@
             // DetailTxt
             // 
             this.DetailTxt.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.DetailTxt.Location = new System.Drawing.Point(608, 12);
+            this.DetailTxt.Location = new System.Drawing.Point(558, 12);
             this.DetailTxt.Multiline = true;
             this.DetailTxt.Name = "DetailTxt";
             this.DetailTxt.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
@@ -70,7 +70,7 @@
             this.cityListBox.ItemHeight = 20;
             this.cityListBox.Items.AddRange(new object[] {
             "北京华滨国际大酒店"});
-            this.cityListBox.Location = new System.Drawing.Point(62, 53);
+            this.cityListBox.Location = new System.Drawing.Point(12, 53);
             this.cityListBox.Name = "cityListBox";
             this.cityListBox.Size = new System.Drawing.Size(227, 404);
             this.cityListBox.TabIndex = 3;
@@ -82,7 +82,7 @@
             this.HotelListBox.DisplayMember = "HotelName";
             this.HotelListBox.FormattingEnabled = true;
             this.HotelListBox.ItemHeight = 12;
-            this.HotelListBox.Location = new System.Drawing.Point(295, 13);
+            this.HotelListBox.Location = new System.Drawing.Point(245, 13);
             this.HotelListBox.Name = "HotelListBox";
             this.HotelListBox.Size = new System.Drawing.Size(307, 448);
             this.HotelListBox.TabIndex = 4;
@@ -93,7 +93,7 @@
             // previousBtn
             // 
             this.previousBtn.Enabled = false;
-            this.previousBtn.Location = new System.Drawing.Point(608, 485);
+            this.previousBtn.Location = new System.Drawing.Point(558, 485);
             this.previousBtn.Name = "previousBtn";
             this.previousBtn.Size = new System.Drawing.Size(75, 23);
             this.previousBtn.TabIndex = 5;
@@ -104,7 +104,7 @@
             // nextBtn
             // 
             this.nextBtn.Enabled = false;
-            this.nextBtn.Location = new System.Drawing.Point(705, 485);
+            this.nextBtn.Location = new System.Drawing.Point(655, 485);
             this.nextBtn.Name = "nextBtn";
             this.nextBtn.Size = new System.Drawing.Size(75, 23);
             this.nextBtn.TabIndex = 6;
@@ -115,7 +115,7 @@
             // skipTxtbox
             // 
             this.skipTxtbox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.skipTxtbox.Location = new System.Drawing.Point(862, 485);
+            this.skipTxtbox.Location = new System.Drawing.Point(812, 485);
             this.skipTxtbox.Name = "skipTxtbox";
             this.skipTxtbox.Size = new System.Drawing.Size(48, 21);
             this.skipTxtbox.TabIndex = 7;
@@ -125,7 +125,7 @@
             // skipBtn
             // 
             this.skipBtn.Enabled = false;
-            this.skipBtn.Location = new System.Drawing.Point(949, 485);
+            this.skipBtn.Location = new System.Drawing.Point(899, 485);
             this.skipBtn.Name = "skipBtn";
             this.skipBtn.Size = new System.Drawing.Size(49, 23);
             this.skipBtn.TabIndex = 8;
@@ -136,7 +136,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(916, 490);
+            this.label1.Location = new System.Drawing.Point(866, 490);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(17, 12);
             this.label1.TabIndex = 9;
@@ -144,7 +144,8 @@
             // 
             // citySearchTxt
             // 
-            this.citySearchTxt.Location = new System.Drawing.Point(62, 13);
+            this.citySearchTxt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.citySearchTxt.Location = new System.Drawing.Point(12, 13);
             this.citySearchTxt.Name = "citySearchTxt";
             this.citySearchTxt.Size = new System.Drawing.Size(227, 21);
             this.citySearchTxt.TabIndex = 10;
@@ -155,7 +156,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1049, 520);
+            this.ClientSize = new System.Drawing.Size(1003, 520);
             this.Controls.Add(this.citySearchTxt);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.skipBtn);

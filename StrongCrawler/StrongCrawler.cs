@@ -18,10 +18,10 @@ namespace StrongCrawler
             _options = new PhantomJSOptions();
             _options.AddAdditionalCapability("phantomjs.page.settings.userAgent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.119 Safari/537.36");
             
-
             _service = PhantomJSDriverService.CreateDefaultService(Environment.CurrentDirectory);
             //不加载图片
             _service.AddArgument("--load-images=false");
+            _service.LoadImages = false;
             
         }
         private PhantomJSOptions _options;
@@ -49,7 +49,8 @@ namespace StrongCrawler
             await Task.Run(() => { 
                 if (OnStrart != null)
                     this.OnStrart(this, new OnStartEventArgs(uri));
-                Driver = new PhantomJSDriver(_options);
+                Driver = new PhantomJSDriver(_service,_options);
+                
                 try{
                     Driver.Navigate().GoToUrl(uri);
                     var watch = DateTime.Now;

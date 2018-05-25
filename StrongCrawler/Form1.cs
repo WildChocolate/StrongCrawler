@@ -65,8 +65,8 @@ namespace StrongCrawler
                 },
                 Condition = (x) => {
                     var s = x.PageSource;
-                    return x.FindElement(By.XPath("//*[@id='commentList']")).Displayed && x.FindElement(By.XPath("//*[@id='commentList']")).Displayed
-                        && !x.FindElement(By.XPath("//*[@id='commentList']")).Text.Contains("点评载入中");
+                    var cmtLisgt = x.FindElement(By.Id("commentList"));
+                    return cmtLisgt.Displayed && cmtLisgt.Displayed && !cmtLisgt.Text.Contains("点评载入中");
                 },
                 TimeOut = 1500
             };
@@ -98,7 +98,6 @@ namespace StrongCrawler
         private void refreshMainInfo()
         {
             mainBuilder.Clear();
-            commentBuiler.Clear();
             mainBuilder.AppendLine("名称：" + hd.HotelName);
             mainBuilder.AppendLine("地址：" + hd.Address);
             mainBuilder.AppendLine("价格:" + hd.Price);
@@ -110,7 +109,7 @@ namespace StrongCrawler
         }
         private void refreshComments(IList<Comment> Comments)
         {
-
+            commentBuiler.Clear();
             foreach (var comment in Comments)
             {
                 commentBuiler.AppendLine(string.Empty);
@@ -245,15 +244,18 @@ namespace StrongCrawler
             this.previousBtn.Enabled = this.nextBtn.Enabled = false;
             var driver = hotelCrawler.Driver;
             driver.FindElement(By.XPath("//*[@id='divCtripComment']/div[@class='c_page_box']/div/a[@class='c_up']")).Click();
-            var tab = driver.FindElement(By.XPath(@"//*[@id='commentTab']"));
+            var tab = driver.FindElement(By.Id("commentTab"));
             while (!tab.Displayed)
             {
                 await Task.Delay(100);
+                tab = driver.FindElement(By.Id("commentTab"));
             }
-            driver.FindElement(By.XPath(@"//*[@id='commentTab']")).Click();
+            tab.Click();
+            await Task.Delay(100);
             forComment = !forComment;
             var s = driver.PageSource;
             var comments = ConvertHelper.ConvertWebeleToCmt(driver.FindElement(By.Id("commentList")));
+            hd.Comments = comments;
             hd.Pager.Previous--;
             hd.Pager.Next--;
             loadHotelInfo();
@@ -273,18 +275,20 @@ namespace StrongCrawler
         private async void button3_Click(object sender, EventArgs e)
         {
             this.previousBtn.Enabled=this.nextBtn.Enabled = false;
-
             var driver = hotelCrawler.Driver;
             driver.FindElement(By.XPath("//*[@id='divCtripComment']/div[@class='c_page_box']/div/a[@class='c_down']")).Click();
-            var tab = driver.FindElement(By.XPath(@"//*[@id='commentTab']"));
+            var tab = driver.FindElement(By.Id("commentTab"));
             while (!tab.Displayed)
             {
                 await Task.Delay(100);
+                tab = driver.FindElement(By.Id("commentTab"));
             }
-            driver.FindElement(By.XPath(@"//*[@id='commentTab']")).Click();
+            tab.Click();
+            await Task.Delay(100);
             forComment = !forComment;
             var s = driver.PageSource;
             var comments = ConvertHelper.ConvertWebeleToCmt(driver.FindElement(By.Id("commentList")));
+            hd.Comments = comments;
             hd.Pager.Previous++;
             hd.Pager.Next++;
             loadHotelInfo();
@@ -346,22 +350,26 @@ namespace StrongCrawler
             pageBox.SendKeys(page);
             var confirmBtn = driver.FindElementById("cPageBtn");
             confirmBtn.Click();
-            var tab = driver.FindElementById("commentTab");
+            var tab = driver.FindElement(By.Id("commentTab"));
             while (!tab.Displayed)
             {
                 await Task.Delay(100);
+                tab = driver.FindElement(By.Id("commentTab"));
             }
             tab.Click();
+            await Task.Delay(100);
             while (tab.Text.Contains("点评载入中"))
             {
                 await Task.Delay(100);
             }
             var s = driver.PageSource;
             var comments = ConvertHelper.ConvertWebeleToCmt(driver.FindElementById("commentTab"));
+            hd.Comments = comments;
             hd.Pager.Previous = int.Parse(page)-1;
-            hd.Pager.Next+= int.Parse(page)+1;
+            hd.Pager.Next= int.Parse(page)+1;
             loadHotelInfo();
             CheckBtnStatus();
+            this.skipBtn.Enabled = true;
         }
 
         private void textBox1_TextChanged_1(object sender, EventArgs e)
